@@ -8,11 +8,13 @@
       />
     </div>
     <div class="col-4">
-      <div class="row justify-content-center" style="height: 5vh">
-        <div class="col-4 padding">
+      <div class="row justify-content-start" style="height: 5vh">
+        <div class="col-9">
           <h2>Associated Tags</h2>
         </div>
-        <div class="col-4 padding circle-position">
+      </div>
+      <div class="row justify-content-start" style="height: 5vh">
+        <div class="col-10 circle-position">
           <svg height="30" width="300">
             <circle
               cx="10"
@@ -91,7 +93,9 @@
               'btn-dark': selectedTags.length > 0,
               'btn-light': selectedTags.length <= 0,
             }"
+            :disabled="selectedTags.length <= 0"
             style="width: 200px"
+            @click="removeEntry(0)"
           >
             {{ selectedTags.length > 0 ? selectedTags[0] : "Null" }}
           </button>
@@ -104,7 +108,9 @@
               'btn-dark': selectedTags.length > 1,
               'btn-light': selectedTags.length <= 1,
             }"
+            :disabled="selectedTags.length <= 1"
             style="width: 200px"
+            @click="removeEntry(1)"
           >
             {{ selectedTags.length > 1 ? selectedTags[1] : "Null" }}
           </button>
@@ -119,7 +125,9 @@
               'btn-dark': selectedTags.length > 2,
               'btn-light': selectedTags.length <= 2,
             }"
+            :disabled="selectedTags.length <= 2"
             style="width: 200px"
+            @click="removeEntry(2)"
           >
             {{ selectedTags.length > 2 ? selectedTags[2] : "Null" }}
           </button>
@@ -132,7 +140,9 @@
               'btn-dark': selectedTags.length > 3,
               'btn-light': selectedTags.length <= 3,
             }"
+            :disabled="selectedTags.length <= 3"
             style="width: 200px"
+            @click="removeEntry(3)"
           >
             {{ selectedTags.length > 3 ? selectedTags[3] : "Null" }}
           </button>
@@ -147,7 +157,9 @@
               'btn-dark': selectedTags.length > 4,
               'btn-light': selectedTags.length <= 4,
             }"
+            :disabled="selectedTags.length <= 4"
             style="width: 200px"
+            @click="removeEntry(4)"
           >
             {{ selectedTags.length > 4 ? selectedTags[4] : "Null" }}
           </button>
@@ -160,7 +172,9 @@
               'btn-dark': selectedTags.length > 5,
               'btn-light': selectedTags.length <= 5,
             }"
+            :disabled="selectedTags.length <= 5"
             style="width: 200px"
+            @click="removeEntry(5)"
           >
             {{ selectedTags.length > 5 ? selectedTags[5] : "Null" }}
           </button>
@@ -175,7 +189,9 @@
               'btn-dark': selectedTags.length > 6,
               'btn-light': selectedTags.length <= 6,
             }"
+            :disabled="selectedTags.length <= 6"
             style="width: 200px"
+            @click="removeEntry(6)"
           >
             {{ selectedTags.length > 6 ? selectedTags[6] : "Null" }}
           </button>
@@ -188,7 +204,9 @@
               'btn-dark': selectedTags.length > 7,
               'btn-light': selectedTags.length <= 7,
             }"
+            :disabled="selectedTags.length <= 7"
             style="width: 200px"
+            @click="removeEntry(7)"
           >
             {{ selectedTags.length > 7 ? selectedTags[7] : "Null" }}
           </button>
@@ -202,7 +220,7 @@
       </div>
       <div
         class="row justify-content-center"
-        style="height: 68vh; overflow: auto"
+        style="height: 61vh; overflow: auto"
       >
         <div class="col-8">
           <div class="accordion" id="accordionPanelsStayOpenExample">
@@ -237,14 +255,14 @@
                   v-for="(tag, indexTags) in value.tags"
                   :key="indexTags"
                 >
-                  <div class="container">
+                  <div class="input-container">
                     <input
                       type="checkbox"
                       :value="tag"
                       :id="tag"
                       v-model="selectedTags"
                     />
-                    <label :for="tag">
+                    <label :for="tag" style="color: white; margin-left: 5px">
                       {{ tag }}
                     </label>
                   </div>
@@ -254,20 +272,32 @@
           </div>
         </div>
       </div>
-      <br>
+      <br />
       <hr style="margin: 0" />
-      <div class="row justify-content-center" style="height: 7vh">
-        <div class="col-5">
+      <div class="row" style="height: 7vh">
+        <div class="col-6">
           <p>Skip and access next image</p>
-          <button type="button" class="btn btn-success btn-margin">Skip</button>
+          <button
+            type="button"
+            class="btn btn-success btn-margin"
+            style="width: 200px"
+            @click="skipTags"
+          >
+            Skip
+          </button>
         </div>
-        <div class="col-1"></div>
         <div class="col-1">
           <div class="vertical"></div>
         </div>
-        <div class="col-5">
+        <div class="col-4">
           <p>Save and access next image</p>
-          <button type="button" class="btn btn-primary btn-margin" @click="saveTags">
+          <button
+            type="button"
+            :disabled="selectedTags.length < 4"
+            class="btn btn-primary btn-margin"
+            style="width: 200px"
+            @click="saveTags"
+          >
             Save
           </button>
         </div>
@@ -286,9 +316,6 @@ import dataFetch from "./api/dataFetching";
 
 export default {
   name: "App",
-  watch: {
-    selectedTags: function() {},
-  },
   data() {
     return {
       tags: myFile,
@@ -297,6 +324,10 @@ export default {
     };
   },
   methods: {
+    removeEntry(position) {
+      this.selectedTags.splice(position, 1);
+    },
+    skipTags() {},
     saveTags() {
       this.images[0].element["dcterms:coverage"] = [
         {
@@ -363,7 +394,12 @@ p {
   height: 7vh;
 }
 
- .btn-margin {
-   margin-top: 10px;
- }
+.btn-margin {
+  margin-top: 10px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
 </style>

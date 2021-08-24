@@ -47,5 +47,167 @@
       "Wreck",
       "UFO"
     ]
+  },
+  {
+    "category": "Mobile Objects (Weapons)",
+    "tags": [
+      "Blade",
+      "Fire weapon",
+      "Laser gun",
+      "explosive weapon",
+      "magic weapon",
+      "Shield",
+      "Throwing weapon",
+      "Melee weapon"
+    ]
+  },
+  {
+    "category": "(Tools)",
+    "tags": [
+      "Axes",
+      "Shovel",
+      "Mechanical tools",
+      "Medical intruments",
+      "Technical tools",
+      "Generic tools",
+      "Instruments"
+    ]
+  },
+  {
+    "category": "(Accessoires)",
+    "tags": [
+      "Jewelery",
+      "Time keeper",
+      "Art works",
+      "Vegetables",
+      "Foods",
+      "Screens",
+      "Books",
+      "Communication device",
+      "Scientific instruments",
+      "Electrical device",
+      "Lighting",
+      "Music devices",
+      "Bed",
+      "Desk",
+      "Library"
+    ]
+  },
+  {
+    "category": "Interiors",
+    "tags": [
+      "Control panel",
+      "Kitchen",
+      "Living room",
+      "Lab",
+      "Command room",
+      "Bedroom",
+      "tunnel",
+      "cave",
+      "Hut",
+      "Workshop",
+      "Religious",
+      "Hall",
+      "Classroom",
+      "Detention",
+      "Industrial",
+      "Arena"
+    ]
+  },
+  {
+    "category": "Events",
+    "tags": [
+      "Fire",
+      "Explosion",
+      "Accident",
+      "Falling",
+      "Fight",
+      "Collision",
+      "Storm",
+      "Assault",
+      "Combat",
+      "Takeoff",
+      "Landing",
+      "Encounters",
+      "Manipulation",
+      "Discovery"
+    ]
+  },
+  {
+    "category": "Actions",
+    "tags": [
+      "Eat",
+      "Defend",
+      "Constrain",
+      "Swim",
+      "Show",
+      "Communicate",
+      "Hug",
+      "Jump",
+      "Talk",
+      "Scream",
+      "Run",
+      "Climb",
+      "Shoot",
+      "Fly",
+      "Hide",
+      "Uncover",
+      "Drive",
+      "Flee",
+      "Watch",
+      "Struggle"
+    ]
+  },
+  {
+    "category": "Exterior",
+    "tags": [
+      "City",
+      "Village",
+      "Plant",
+      "Bridge",
+      "Tower",
+      "River",
+      "Sea",
+      "Mountain",
+      "Desert",
+      "Crater",
+      "Field",
+      "Jungle",
+      "Forest",
+      "Lake",
+      "Garden",
+      "Space",
+      "Stars",
+      "Shooting star",
+      "wasteland",
+      "Ruins",
+      "Castle",
+      "Palace",
+      "Dam",
+      "Void",
+      "Industrial",
+      "Street"
+    ]
+  },
+  {
+    "category": "Ambiance",
+    "tags": [
+      "Light",
+      "Dark",
+      "Dark cloud",
+      "Light cloud",
+      "Fog",
+      "Dawn",
+      "Rain",
+      "Snow",
+      "Sun",
+      "Moon",
+      "Hail",
+      "Gas",
+      "Smoke",
+      "Ice",
+      "Night",
+      "Wind"
+    ]
   }
 ]
