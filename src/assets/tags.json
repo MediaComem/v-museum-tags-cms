@@ -1,0 +1,51 @@
+[
+  {
+    "category": "Creatures / Being",
+    "tags": [
+      "Robot",
+      "Homme",
+      "Femme",
+      "Dinosaure",
+      "Insecte",
+      "Reptile",
+      "Wings",
+      "Sea Creature",
+      "Land Creature",
+      "Mythique",
+      "Tentacules",
+      "Fantôme",
+      "Squelette",
+      "Humanoide",
+      "Créature Macabre",
+      "Science-fiction",
+      "Divine",
+      "Evil",
+      "Child",
+      "Vegétale"
+    ]
+  },
+  {
+    "category": "Véhicules",
+    "tags": [
+      "Wings",
+      "Wheels",
+      "Tracks",
+      "Caterpillar tracks",
+      "Skiis",
+      "Sliding",
+      "Legs",
+      "Glidding",
+      "Orbiting",
+      "Autonomous",
+      "Tracked / Pulled",
+      "Submarine",
+      "Sail",
+      "Hover",
+      "Levitating",
+      "Rocket ship",
+      "Spacecraft",
+      "Wreck",
+      "UFO"
+    ]
+  }
+]
