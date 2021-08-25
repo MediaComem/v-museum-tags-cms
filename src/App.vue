@@ -88,7 +88,7 @@
         <div class="col-4">
           <button
             type="button"
-            class="btn"
+            class="btn button-border"
             :class="{
               'btn-dark': selectedTags.length > 0,
               'btn-light': selectedTags.length <= 0,
@@ -103,7 +103,7 @@
         <div class="col-4">
           <button
             type="button"
-            class="btn"
+            class="btn button-border"
             :class="{
               'btn-dark': selectedTags.length > 1,
               'btn-light': selectedTags.length <= 1,
@@ -120,7 +120,7 @@
         <div class="col-4">
           <button
             type="button"
-            class="btn"
+            class="btn button-border"
             :class="{
               'btn-dark': selectedTags.length > 2,
               'btn-light': selectedTags.length <= 2,
@@ -135,7 +135,7 @@
         <div class="col-4">
           <button
             type="button"
-            class="btn"
+            class="btn button-border"
             :class="{
               'btn-dark': selectedTags.length > 3,
               'btn-light': selectedTags.length <= 3,
@@ -152,7 +152,7 @@
         <div class="col-4">
           <button
             type="button"
-            class="btn"
+            class="btn button-border"
             :class="{
               'btn-dark': selectedTags.length > 4,
               'btn-light': selectedTags.length <= 4,
@@ -167,7 +167,7 @@
         <div class="col-4">
           <button
             type="button"
-            class="btn"
+            class="btn button-border"
             :class="{
               'btn-dark': selectedTags.length > 5,
               'btn-light': selectedTags.length <= 5,
@@ -184,7 +184,7 @@
         <div class="col-4">
           <button
             type="button"
-            class="btn"
+            class="btn button-border"
             :class="{
               'btn-dark': selectedTags.length > 6,
               'btn-light': selectedTags.length <= 6,
@@ -199,7 +199,7 @@
         <div class="col-4">
           <button
             type="button"
-            class="btn"
+            class="btn button-border"
             :class="{
               'btn-dark': selectedTags.length > 7,
               'btn-light': selectedTags.length <= 7,
@@ -279,8 +279,8 @@
           <p>Skip and access next image</p>
           <button
             type="button"
-            class="btn btn-success btn-margin"
-            style="width: 200px"
+            class="btn btn-light btn-margin button-border"
+            style="width: 6vw"
             @click="skipTags"
           >
             Skip
@@ -294,8 +294,8 @@
           <button
             type="button"
             :disabled="selectedTags.length < 4"
-            class="btn btn-primary btn-margin"
-            style="width: 200px"
+            class="btn btn-light btn-margin button-border"
+            style="width: 6vw"
             @click="saveTags"
           >
             Save
@@ -327,17 +327,37 @@ export default {
     removeEntry(position) {
       this.selectedTags.splice(position, 1);
     },
-    skipTags() {},
-    saveTags() {
-      this.images[0].element["dcterms:coverage"] = [
+    skipTags() {
+      this.images[0].element["dcterms:rights"] = [
         {
+          type: "literal",
+          property_id: 15,
+          property_label: "Rights",
+          is_public: true,
+          "@value": "Skip",
+        },
+      ];
+      dataFetch.saveItem(this.images[0].element).then(() => {
+        dataFetch.getImages().then((result) => {
+          this.images = result;
+          dataFetch.analyzePending();
+        });
+      });
+    },
+    saveTags() {
+      const newTags = [];
+      this.selectedTags.forEach((element) => {
+        newTags.push(
+          {
           type: "literal",
           property_id: 14,
           property_label: "Coverage",
           is_public: true,
-          "@value": "This is a test2",
+          "@value": element,
         },
-      ];
+        )
+      })
+      this.images[0].element["dcterms:coverage"] = newTags;
       this.images[0].element["dcterms:rights"] = [
         {
           type: "literal",
@@ -347,7 +367,13 @@ export default {
           "@value": "Save",
         },
       ];
-      dataFetch.saveItem(this.images[0].element);
+      dataFetch.saveItem(this.images[0].element).then(() => {
+        dataFetch.getImages().then((result) => {
+          this.selectedTags = [];
+          this.images = result;
+          dataFetch.analyzePending();
+        });
+      });
     },
   },
   mounted() {
@@ -401,5 +427,9 @@ p {
 .input-container {
   display: flex;
   align-items: center;
+}
+
+.button-border {
+  border: 1px solid #000000 !important;
 }
 </style>
