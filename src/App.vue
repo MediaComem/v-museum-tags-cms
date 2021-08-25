@@ -94,7 +94,7 @@
               'btn-light': selectedTags.length <= 0,
             }"
             :disabled="selectedTags.length <= 0"
-            style="width: 200px"
+            style="width: 220px"
             @click="removeEntry(0)"
           >
             <font-awesome-icon
@@ -114,7 +114,7 @@
               'btn-light': selectedTags.length <= 1,
             }"
             :disabled="selectedTags.length <= 1"
-            style="width: 200px"
+            style="width: 220px"
             @click="removeEntry(1)"
           >
             <font-awesome-icon
@@ -136,7 +136,7 @@
               'btn-light': selectedTags.length <= 2,
             }"
             :disabled="selectedTags.length <= 2"
-            style="width: 200px"
+            style="width: 220px"
             @click="removeEntry(2)"
           >
             <font-awesome-icon
@@ -156,7 +156,7 @@
               'btn-light': selectedTags.length <= 3,
             }"
             :disabled="selectedTags.length <= 3"
-            style="width: 200px"
+            style="width: 220px"
             @click="removeEntry(3)"
           >
             <font-awesome-icon
@@ -178,7 +178,7 @@
               'btn-light': selectedTags.length <= 4,
             }"
             :disabled="selectedTags.length <= 4"
-            style="width: 200px"
+            style="width: 220px"
             @click="removeEntry(4)"
           >
             <font-awesome-icon
@@ -198,7 +198,7 @@
               'btn-light': selectedTags.length <= 5,
             }"
             :disabled="selectedTags.length <= 5"
-            style="width: 200px"
+            style="width: 220px"
             @click="removeEntry(5)"
           >
             <font-awesome-icon
@@ -220,7 +220,7 @@
               'btn-light': selectedTags.length <= 6,
             }"
             :disabled="selectedTags.length <= 6"
-            style="width: 200px"
+            style="width: 220px"
             @click="removeEntry(6)"
           >
             <font-awesome-icon
@@ -240,7 +240,7 @@
               'btn-light': selectedTags.length <= 7,
             }"
             :disabled="selectedTags.length <= 7"
-            style="width: 200px"
+            style="width: 220px"
             @click="removeEntry(7)"
           >
             <font-awesome-icon
@@ -301,6 +301,7 @@
                       :value="tag"
                       :id="tag"
                       v-model="selectedTags"
+                      :disabled="selectedTags.length >= 8 && !selectedTags.includes(tag)"
                     />
                     <label :for="tag" style="color: white; margin-left: 5px">
                       {{ tag }}
