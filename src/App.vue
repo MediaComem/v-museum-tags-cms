@@ -97,6 +97,11 @@
             style="width: 200px"
             @click="removeEntry(0)"
           >
+            <font-awesome-icon
+              v-if="selectedTags.length > 0"
+              icon="times"
+              style="font-size: small"
+            />
             {{ selectedTags.length > 0 ? selectedTags[0] : "Null" }}
           </button>
         </div>
@@ -112,6 +117,11 @@
             style="width: 200px"
             @click="removeEntry(1)"
           >
+            <font-awesome-icon
+              v-if="selectedTags.length > 1"
+              icon="times"
+              style="font-size: small"
+            />
             {{ selectedTags.length > 1 ? selectedTags[1] : "Null" }}
           </button>
         </div>
@@ -129,6 +139,11 @@
             style="width: 200px"
             @click="removeEntry(2)"
           >
+            <font-awesome-icon
+              v-if="selectedTags.length > 2"
+              icon="times"
+              style="font-size: small"
+            />
             {{ selectedTags.length > 2 ? selectedTags[2] : "Null" }}
           </button>
         </div>
@@ -144,6 +159,11 @@
             style="width: 200px"
             @click="removeEntry(3)"
           >
+            <font-awesome-icon
+              v-if="selectedTags.length > 3"
+              icon="times"
+              style="font-size: small"
+            />
             {{ selectedTags.length > 3 ? selectedTags[3] : "Null" }}
           </button>
         </div>
@@ -161,6 +181,11 @@
             style="width: 200px"
             @click="removeEntry(4)"
           >
+            <font-awesome-icon
+              v-if="selectedTags.length > 4"
+              icon="times"
+              style="font-size: small"
+            />
             {{ selectedTags.length > 4 ? selectedTags[4] : "Null" }}
           </button>
         </div>
@@ -176,6 +201,11 @@
             style="width: 200px"
             @click="removeEntry(5)"
           >
+            <font-awesome-icon
+              v-if="selectedTags.length > 5"
+              icon="times"
+              style="font-size: small"
+            />
             {{ selectedTags.length > 5 ? selectedTags[5] : "Null" }}
           </button>
         </div>
@@ -193,6 +223,11 @@
             style="width: 200px"
             @click="removeEntry(6)"
           >
+            <font-awesome-icon
+              v-if="selectedTags.length > 6"
+              icon="times"
+              style="font-size: small"
+            />
             {{ selectedTags.length > 6 ? selectedTags[6] : "Null" }}
           </button>
         </div>
@@ -208,6 +243,11 @@
             style="width: 200px"
             @click="removeEntry(7)"
           >
+            <font-awesome-icon
+              v-if="selectedTags.length > 7"
+              icon="times"
+              style="font-size: small"
+            />
             {{ selectedTags.length > 7 ? selectedTags[7] : "Null" }}
           </button>
         </div>
@@ -284,6 +324,11 @@
             @click="skipTags"
           >
             Skip
+            <img
+              src="./assets/Skip.png"
+              alt="Skip"
+              style="height: 10px; width: 10px; margin-bottom: 2px;"
+            />
           </button>
         </div>
         <div class="col-1">
@@ -298,7 +343,8 @@
             style="width: 6vw"
             @click="saveTags"
           >
-            Save
+            Save Image
+            <font-awesome-icon icon="check" style="font-size: small" />
           </button>
         </div>
       </div>
@@ -347,16 +393,14 @@ export default {
     saveTags() {
       const newTags = [];
       this.selectedTags.forEach((element) => {
-        newTags.push(
-          {
+        newTags.push({
           type: "literal",
           property_id: 14,
           property_label: "Coverage",
           is_public: true,
           "@value": element,
-        },
-        )
-      })
+        });
+      });
       this.images[0].element["dcterms:coverage"] = newTags;
       this.images[0].element["dcterms:rights"] = [
         {
@@ -431,5 +475,6 @@ p {
 
 .button-border {
   border: 1px solid #000000 !important;
+  border-radius: 10px;
 }
 </style>
