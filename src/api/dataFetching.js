@@ -26,7 +26,7 @@ const parseImages = (data) => {
         property_id: 15,
         property_label: "Rights",
         is_public: true,
-        "@value": "pending",
+        "@value": "Pending",
       },
     ];
     element["dcterms:educationLevel"] = [
@@ -38,7 +38,7 @@ const parseImages = (data) => {
         "@value": Date.now().toString(),
       },
     ];
-    //save(element);
+    save(element);
     images.push({ image: parseElement(element), element: element });
   });
   return images;
@@ -49,6 +49,7 @@ const getPendingImages = async () => {
   const { data } = await request(req);
   data.forEach((element) => {
     if (+element["dcterms:educationLevel"][0]["@value"] + 300000 < Date.now()) {
+      console.log("TEST");
       element["dcterms:rights"] = [];
       element["dcterms:educationLevel"] = [];
       save(element);
@@ -57,19 +58,14 @@ const getPendingImages = async () => {
 };
 
 export default {
-  async getImages() {
-    const req = process.env.VUE_APP_FETCH_BASE;
+  async getImages(listId) {
+    let req = process.env.VUE_APP_FETCH_BASE;
+    listId.forEach(element => {
+      req = req + process.env.VUE_APP_ADD_IDENT_REMOVER + element;
+    })
     const { data } = await request(req);
     return parseImages(data);
   }, 
-
-  async removePending(items) {
-    items.forEach((item) => {
-      item.element["dcterms:rights"] = [];
-      item.element["dcterms:educationLevel"] = [];
-      save(item.element);
-    });
-  },
 
   async saveItem(item) {
     return save(item);

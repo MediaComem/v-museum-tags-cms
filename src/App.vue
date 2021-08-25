@@ -1,21 +1,17 @@
 <template>
   <div class="row">
     <div class="col-8 background">
-      <img
-        style="height: 80vh; margin-top: 10vh"
-        v-if="images"
-        :src="images[0].image.large"
-      />
+      <img style="height: 100vh" v-if="images" :src="images[0].image.large" />
     </div>
-    <div class="col-4">
-      <div class="row justify-content-start" style="height: 5vh">
+    <div class="col-4" style="height: 100vh">
+      <div class="row justify-content-start" style="height: 3.5vh; ">
         <div class="col-9">
           <h2>Associated Tags</h2>
         </div>
       </div>
-      <div class="row justify-content-start" style="height: 5vh">
+      <div class="row justify-content-start" style="height: 3.5vh; ">
         <div class="col-10 circle-position">
-          <svg height="30" width="300">
+          <svg height="2vh" width="300">
             <circle
               cx="10"
               cy="10"
@@ -83,9 +79,8 @@
           </svg>
         </div>
       </div>
-      <hr />
-      <div class="row justify-content-center" style="height: 3.5vh">
-        <div class="col-4">
+      <div class="row justify-content-center" style="height: 4vh; ">
+        <div class="col-5">
           <button
             type="button"
             class="btn button-border"
@@ -94,7 +89,7 @@
               'btn-light': selectedTags.length <= 0,
             }"
             :disabled="selectedTags.length <= 0"
-            style="width: 220px"
+            style="width: 220px;"
             @click="removeEntry(0)"
           >
             <font-awesome-icon
@@ -105,7 +100,7 @@
             {{ selectedTags.length > 0 ? selectedTags[0] : "Null" }}
           </button>
         </div>
-        <div class="col-4">
+        <div class="col-5">
           <button
             type="button"
             class="btn button-border"
@@ -126,8 +121,9 @@
           </button>
         </div>
       </div>
-      <div class="row justify-content-center" style="height: 3.5vh">
-        <div class="col-4">
+      <div style="display: block; height: 0.5vh"/>
+      <div class="row justify-content-center" style="height: 4vh; ">
+        <div class="col-5">
           <button
             type="button"
             class="btn button-border"
@@ -147,7 +143,7 @@
             {{ selectedTags.length > 2 ? selectedTags[2] : "Null" }}
           </button>
         </div>
-        <div class="col-4">
+        <div class="col-5">
           <button
             type="button"
             class="btn button-border"
@@ -168,8 +164,9 @@
           </button>
         </div>
       </div>
-      <div class="row justify-content-center" style="height: 3.5vh">
-        <div class="col-4">
+<div style="display: block; height: 0.5vh"/>
+      <div class="row justify-content-center" style="height: 4vh; ">
+        <div class="col-5">
           <button
             type="button"
             class="btn button-border"
@@ -189,7 +186,7 @@
             {{ selectedTags.length > 4 ? selectedTags[4] : "Null" }}
           </button>
         </div>
-        <div class="col-4">
+        <div class="col-5">
           <button
             type="button"
             class="btn button-border"
@@ -210,8 +207,9 @@
           </button>
         </div>
       </div>
-      <div class="row justify-content-center" style="height: 3.5vh">
-        <div class="col-4">
+<div style="display: block; height: 0.5vh"/>
+      <div class="row justify-content-center" style="height: 4vh; ">
+        <div class="col-5">
           <button
             type="button"
             class="btn button-border"
@@ -231,7 +229,7 @@
             {{ selectedTags.length > 6 ? selectedTags[6] : "Null" }}
           </button>
         </div>
-        <div class="col-4">
+        <div class="col-5">
           <button
             type="button"
             class="btn button-border"
@@ -252,15 +250,15 @@
           </button>
         </div>
       </div>
-      <br />
-      <div class="row align-items-start">
+      <hr />
+      <div class="row align-items-start" style="height: 5vh; ">
         <div class="col-6">
           <h2>Tags</h2>
         </div>
       </div>
       <div
         class="row justify-content-center"
-        style="height: 61vh; overflow: auto"
+        style="height: 60vh; overflow: auto"
       >
         <div class="col-8">
           <div class="accordion" id="accordionPanelsStayOpenExample">
@@ -301,7 +299,9 @@
                       :value="tag"
                       :id="tag"
                       v-model="selectedTags"
-                      :disabled="selectedTags.length >= 8 && !selectedTags.includes(tag)"
+                      :disabled="
+                        selectedTags.length >= 8 && !selectedTags.includes(tag)
+                      "
                     />
                     <label :for="tag" style="color: white; margin-left: 5px">
                       {{ tag }}
@@ -313,16 +313,17 @@
           </div>
         </div>
       </div>
-      <br />
+<div style="display: block; height: 0.5vh"/>
       <hr style="margin: 0" />
       <div class="row" style="height: 7vh">
-        <div class="col-6">
+        <div class="col-5">
           <p>Skip and access next image</p>
           <button
             type="button"
             class="btn btn-light btn-margin button-border"
-            style="width: 6vw"
+            style="width: 8vw"
             @click="skipTags"
+            :disabled="selectedTags.length >= 4"
           >
             Skip
             <img
@@ -335,13 +336,13 @@
         <div class="col-1">
           <div class="vertical"></div>
         </div>
-        <div class="col-4">
+        <div class="col-6">
           <p>Save and access next image</p>
           <button
             type="button"
             :disabled="selectedTags.length < 4"
             class="btn btn-light btn-margin button-border"
-            style="width: 6vw"
+            style="width: 8vw"
             @click="saveTags"
           >
             Save Image
@@ -368,6 +369,7 @@ export default {
       tags: myFile,
       images: undefined,
       selectedTags: [],
+      skipId: [],
     };
   },
   methods: {
@@ -375,6 +377,7 @@ export default {
       this.selectedTags.splice(position, 1);
     },
     skipTags() {
+      this.skipId.push(this.images[0].element["dcterms:identifier"][0]["@value"]);
       this.images[0].element["dcterms:rights"] = [
         {
           type: "literal",
@@ -384,8 +387,43 @@ export default {
           "@value": "Skip",
         },
       ];
+      const skipElement = this.images[0].element["dcterms:rightsHolder"];
+      if (skipElement) {
+        const nbSkip = +skipElement[0]["@value"] + 1;
+        if (nbSkip >= 3) {
+          this.images[0].element["dcterms:rights"] = [
+            {
+              type: "literal",
+              property_id: 15,
+              property_label: "Rights",
+              is_public: true,
+              "@value": "Flag",
+            },
+          ];
+        }
+        this.images[0].element["dcterms:rightsHolder"] = [
+          {
+            type: "literal",
+            property_id: 50,
+            property_label: "Rights",
+            is_public: true,
+            "@value": nbSkip.toString(),
+          },
+        ];
+      } else {
+        this.images[0].element["dcterms:rightsHolder"] = [
+          {
+            type: "literal",
+            property_id: 50,
+            property_label: "Rights",
+            is_public: true,
+            "@value": "1",
+          },
+        ];
+      }
+
       dataFetch.saveItem(this.images[0].element).then(() => {
-        dataFetch.getImages().then((result) => {
+        dataFetch.getImages(this.skipId).then((result) => {
           this.images = result;
           dataFetch.analyzePending();
         });
@@ -413,7 +451,7 @@ export default {
         },
       ];
       dataFetch.saveItem(this.images[0].element).then(() => {
-        dataFetch.getImages().then((result) => {
+        dataFetch.getImages(this.skipId).then((result) => {
           this.selectedTags = [];
           this.images = result;
           dataFetch.analyzePending();
@@ -422,8 +460,9 @@ export default {
     },
   },
   mounted() {
-    dataFetch.getImages().then((result) => {
+    dataFetch.getImages(this.skipId).then((result) => {
       this.images = result;
+      console.log(this.images);
       dataFetch.analyzePending();
     });
   },
@@ -439,9 +478,14 @@ export default {
   color: #2c3e50;
 }
 
+br {
+  height: 2px;
+}
+
 hr {
   opacity: 1;
-  margin: 5px;
+  margin: 0.5vh;
+  height: 1vh;
 }
 
 p {
@@ -462,7 +506,7 @@ p {
 
 .vertical {
   border-left: 1px solid black;
-  height: 7vh;
+  height: 9vh;
 }
 
 .btn-margin {
