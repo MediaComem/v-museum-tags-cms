@@ -38,7 +38,7 @@ const parseImages = (data) => {
         "@value": Date.now().toString(),
       },
     ];
-    //save(element);
+    save(element);
     images.push({ image: parseElement(element), element: element });
   });
   return images;
@@ -75,7 +75,6 @@ export default {
         element;
         position = position + 1;
     });
-    console.log(req);
     const { data } = await request(req);
     return parseImages(data);
   },
