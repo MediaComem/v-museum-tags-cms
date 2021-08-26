@@ -5,7 +5,7 @@ const request = async (url) => {
 };
 
 const save = async (item) => {
-  return axios.put("api/items/" + item["o:id"], item, {
+  return axios.put(process.env.VUE_APP_PUT_REQUEST + item["o:id"], item, {
     params: {
       key_identity: process.env.VUE_APP_KEY_IDENTITY,
       key_credential: process.env.VUE_APP_KEY_CREDENTIAL,
@@ -38,7 +38,7 @@ const parseImages = (data) => {
         "@value": Date.now().toString(),
       },
     ];
-    save(element);
+    //save(element);
     images.push({ image: parseElement(element), element: element });
   });
   return images;
@@ -49,23 +49,36 @@ const getPendingImages = async () => {
   const { data } = await request(req);
   data.forEach((element) => {
     if (+element["dcterms:educationLevel"][0]["@value"] + 300000 < Date.now()) {
-      console.log("TEST");
       element["dcterms:rights"] = [];
       element["dcterms:educationLevel"] = [];
       save(element);
     }
-  })
+  });
 };
 
 export default {
   async getImages(listId) {
     let req = process.env.VUE_APP_FETCH_BASE;
-    listId.forEach(element => {
-      req = req + process.env.VUE_APP_ADD_IDENT_REMOVER + element;
-    })
+    let position = 3;
+    listId.forEach((element) => {
+      req =
+        req +
+        process.env.VUE_APP_ADD_IDENT_REMOVER_PART_1 +
+        position +
+        process.env.VUE_APP_ADD_IDENT_REMOVER_PART_2 +
+        position +
+        process.env.VUE_APP_ADD_IDENT_REMOVER_PART_3 +
+        position +
+        process.env.VUE_APP_ADD_IDENT_REMOVER_PART_4 +
+        position +
+        process.env.VUE_APP_ADD_IDENT_REMOVER_PART_5 +
+        element;
+        position = position + 1;
+    });
+    console.log(req);
     const { data } = await request(req);
     return parseImages(data);
-  }, 
+  },
 
   async saveItem(item) {
     return save(item);
@@ -73,5 +86,5 @@ export default {
 
   async analyzePending() {
     getPendingImages();
-  }
+  },
 };

@@ -1,5 +1,14 @@
 <template>
-  <div class="row">
+  <div v-if="!isAuth">
+    <form class="login" style="padding: 5vh">
+      <div>
+        <h2>Login</h2>
+        <input type="password" v-model="password" placeholder="Password" />
+        <button v-on:click="onSubmit">Log in</button>
+      </div>
+    </form>
+  </div>
+  <div class="row" v-if="isAuth">
     <div class="col-8 background">
       <img style="height: 100vh" v-if="images" :src="images[0].image.large" />
     </div>
@@ -121,7 +130,7 @@
           </button>
         </div>
       </div>
-      <div style="display: block; height: 0.5vh"/>
+      <div style="display: block; height: 0.5vh" />
       <div class="row justify-content-center" style="height: 4vh; ">
         <div class="col-5">
           <button
@@ -164,7 +173,7 @@
           </button>
         </div>
       </div>
-<div style="display: block; height: 0.5vh"/>
+      <div style="display: block; height: 0.5vh" />
       <div class="row justify-content-center" style="height: 4vh; ">
         <div class="col-5">
           <button
@@ -207,7 +216,7 @@
           </button>
         </div>
       </div>
-<div style="display: block; height: 0.5vh"/>
+      <div style="display: block; height: 0.5vh" />
       <div class="row justify-content-center" style="height: 4vh; ">
         <div class="col-5">
           <button
@@ -313,7 +322,7 @@
           </div>
         </div>
       </div>
-<div style="display: block; height: 0.5vh"/>
+      <div style="display: block; height: 0.5vh" />
       <hr style="margin: 0" />
       <div class="row" style="height: 7vh">
         <div class="col-5">
@@ -357,6 +366,7 @@
 <script>
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import { sha256 } from "js-sha256";
 
 import myFile from "./assets/tags.json";
 
@@ -370,14 +380,24 @@ export default {
       images: undefined,
       selectedTags: [],
       skipId: [],
+      password: "",
+      isAuth: false,
     };
   },
   methods: {
+    onSubmit() {
+      if (sha256(this.password) === process.env.VUE_APP_PASSWORD) {
+        this.isAuth = true;
+      }
+    },
     removeEntry(position) {
       this.selectedTags.splice(position, 1);
     },
     skipTags() {
-      this.skipId.push(this.images[0].element["dcterms:identifier"][0]["@value"]);
+      this.skipId.push(
+        this.images[0].element["dcterms:identifier"][0]["@value"]
+      );
+      this.skipId = [...new Set(this.skipId)];
       this.images[0].element["dcterms:rights"] = [
         {
           type: "literal",
@@ -462,7 +482,6 @@ export default {
   mounted() {
     dataFetch.getImages(this.skipId).then((result) => {
       this.images = result;
-      console.log(this.images);
       dataFetch.analyzePending();
     });
   },
@@ -521,5 +540,14 @@ p {
 .button-border {
   border: 1px solid #000000 !important;
   border-radius: 10px;
+}
+
+.login {
+  background-color: gray;
+  height: 25vh;
+  width: 25vw;
+  left: 37.5vw;
+  top: 37.5vh;
+  position: relative;
 }
 </style>

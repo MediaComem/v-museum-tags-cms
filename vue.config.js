@@ -1,5 +1,5 @@
 module.exports = {
-    publicPath: process.env.NODE_ENV === "production" ? "/v-museum" : "/",
+    publicPath: process.env.NODE_ENV === "production" ? "/v-museum-tags-cms/" : "/",
   
     devServer: {
       proxy: {
