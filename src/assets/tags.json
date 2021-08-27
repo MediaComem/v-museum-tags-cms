@@ -16,7 +16,7 @@
       "Humanoid",
       "Living dead",
       "Mechanical creature",
-      "Divine creature",
+      "Religious figure",
       "Evil creature",
       "Child",
       "Plant creature",
@@ -93,7 +93,10 @@
       "Music device",
       "Medical device",
       "Mechanical tool",
-      "Machinery"
+      "Machinery",
+      "Religious artefact",
+      "Mask",
+      "Helmet"
     ]
   },
   {
@@ -156,13 +159,16 @@
       "Desert",
       "Crater",
       "Forest",
-      "Outer space",
       "Stars",
       "Wasteland",
       "Ruins",
       "Castle",
       "Palace",
-      "Street"
+      "Path/street",
+      "Rocks/cliffs",
+      "Sun",
+      "Moon",
+      "Comet"
     ]
   },
   {

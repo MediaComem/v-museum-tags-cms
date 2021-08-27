@@ -26,7 +26,7 @@
           />
         </div>
         <div class="col-5" style="height: 94vh">
-          <div class="row justify-content-start" >
+          <div class="row justify-content-start">
             <div class="col-12">
               <h2>Selected Tags</h2>
             </div>
@@ -201,20 +201,18 @@
               <h2>Tags</h2>
             </div>
           </div>
-          <div class="row" style="height: 55%; overflow:auto">
+          <div class="row">
             <div
               class=" col-5 card"
-              style="padding: 0; margin-left: 12px; margin-right: 5%"
+              style="padding: 0; margin-left: 12px; margin-right: 5%; height: 50%"
             >
               <div class="card-header">
                 Featured
               </div>
-              <ul
-                class="list-group list-group-flush"
-                v-for="(value, index) in tags"
-                :key="index"
-              >
+              <ul class="list-group list-group-flush">
                 <li
+                  v-for="(value, index) in tags"
+                  :key="index"
                   class="list-group-item"
                   :class="{ selected: selectedCategory === value.category }"
                   @click="selectCategory(value.category)"
@@ -223,17 +221,18 @@
                 </li>
               </ul>
             </div>
-            <div class=" col-5 card" style="padding: 0">
+            <div
+              class=" col-5 card"
+              style="padding: 0; height: 50vh; overflow: scroll;"
+            >
               <div class="card-header">
                 Tags
               </div>
-              <ul
-                class="list-group list-group-flush"
-                v-for="(value, index) in displayTags"
-                :key="index"
-              >
+              <ul class="list-group list-group-flush">
                 <li
                   class="list-group-item"
+                  v-for="(value, index) in displayTags"
+                  :key="index"
                   :class="{
                     selected: this.selectedTags.includes(value),
                     'block-tags':
@@ -533,9 +532,9 @@ p {
 
 .loader {
   position: absolute;
-  left: 45vw;
-  top: 45vh;
-  width: 5vw;
+  left: 47vw;
+  top: 47vh;
+  width: vw;
 }
 
 .loader-wheel {
