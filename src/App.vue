@@ -8,355 +8,283 @@
       </div>
     </form>
   </div>
-  <div class="row" v-if="isAuth">
-    <div class="col-8 background">
-      <img style="height: 100vh" v-if="images" :src="images[0].image.large" />
+  <div v-if="isAuth && isLoad" class="loading">
+    <div class="loader">
+      <div class="loader-wheel"></div>
+      <div class="loader-text"></div>
     </div>
-    <div class="col-4" style="height: 100vh">
-      <div class="row justify-content-start" style="height: 3.5vh; ">
-        <div class="col-9">
-          <h2>Associated Tags</h2>
+  </div>
+  <div style="height: 100vh; widhth: 100vw" v-if="isAuth">
+    <div class="container-fluid" style="margin: 3vh">
+      <div class="row" style="height:94vh" v-if="isAuth">
+        <div class="col-7 background" style="height: 94vh">
+          <img
+            v-if="images"
+            :src="images[0].image.large"
+            class="img-fluid"
+            style="height: 94vh"
+          />
         </div>
-      </div>
-      <div class="row justify-content-start" style="height: 3.5vh; ">
-        <div class="col-10 circle-position">
-          <svg height="2vh" width="300">
-            <circle
-              cx="10"
-              cy="10"
-              r="7"
-              stroke="black"
-              stroke-width="2"
-              :fill="selectedTags.length > 0 ? 'black' : 'none'"
-            ></circle>
-            <circle
-              cx="30"
-              cy="10"
-              r="7"
-              stroke="black"
-              stroke-width="2"
-              :fill="selectedTags.length > 1 ? 'black' : 'none'"
-            ></circle>
-            <circle
-              cx="50"
-              cy="10"
-              r="7"
-              stroke="black"
-              stroke-width="2"
-              :fill="selectedTags.length > 2 ? 'black' : 'none'"
-            ></circle>
-            <circle
-              cx="70"
-              cy="10"
-              r="7"
-              stroke="black"
-              stroke-width="2"
-              :fill="selectedTags.length > 3 ? 'black' : 'none'"
-            ></circle>
-            <circle
-              cx="90"
-              cy="10"
-              r="7"
-              stroke="black"
-              stroke-width="2"
-              :fill="selectedTags.length > 4 ? 'black' : 'none'"
-            ></circle>
-            <circle
-              cx="110"
-              cy="10"
-              r="7"
-              stroke="black"
-              stroke-width="2"
-              :fill="selectedTags.length > 5 ? 'black' : 'none'"
-            ></circle>
-            <circle
-              cx="130"
-              cy="10"
-              r="7"
-              stroke="black"
-              stroke-width="2"
-              :fill="selectedTags.length > 6 ? 'black' : 'none'"
-            ></circle>
-            <circle
-              cx="150"
-              cy="10"
-              r="7"
-              stroke="black"
-              stroke-width="2"
-              :fill="selectedTags.length > 7 ? 'black' : 'none'"
-            ></circle>
-          </svg>
-        </div>
-      </div>
-      <div class="row justify-content-center" style="height: 4vh; ">
-        <div class="col-5">
-          <button
-            type="button"
-            class="btn button-border"
-            :class="{
-              'btn-dark': selectedTags.length > 0,
-              'btn-light': selectedTags.length <= 0,
-            }"
-            :disabled="selectedTags.length <= 0"
-            style="width: 220px;"
-            @click="removeEntry(0)"
-          >
-            <font-awesome-icon
-              v-if="selectedTags.length > 0"
-              icon="times"
-              style="font-size: small"
-            />
-            {{ selectedTags.length > 0 ? selectedTags[0] : "Null" }}
-          </button>
-        </div>
-        <div class="col-5">
-          <button
-            type="button"
-            class="btn button-border"
-            :class="{
-              'btn-dark': selectedTags.length > 1,
-              'btn-light': selectedTags.length <= 1,
-            }"
-            :disabled="selectedTags.length <= 1"
-            style="width: 220px"
-            @click="removeEntry(1)"
-          >
-            <font-awesome-icon
-              v-if="selectedTags.length > 1"
-              icon="times"
-              style="font-size: small"
-            />
-            {{ selectedTags.length > 1 ? selectedTags[1] : "Null" }}
-          </button>
-        </div>
-      </div>
-      <div style="display: block; height: 0.5vh" />
-      <div class="row justify-content-center" style="height: 4vh; ">
-        <div class="col-5">
-          <button
-            type="button"
-            class="btn button-border"
-            :class="{
-              'btn-dark': selectedTags.length > 2,
-              'btn-light': selectedTags.length <= 2,
-            }"
-            :disabled="selectedTags.length <= 2"
-            style="width: 220px"
-            @click="removeEntry(2)"
-          >
-            <font-awesome-icon
-              v-if="selectedTags.length > 2"
-              icon="times"
-              style="font-size: small"
-            />
-            {{ selectedTags.length > 2 ? selectedTags[2] : "Null" }}
-          </button>
-        </div>
-        <div class="col-5">
-          <button
-            type="button"
-            class="btn button-border"
-            :class="{
-              'btn-dark': selectedTags.length > 3,
-              'btn-light': selectedTags.length <= 3,
-            }"
-            :disabled="selectedTags.length <= 3"
-            style="width: 220px"
-            @click="removeEntry(3)"
-          >
-            <font-awesome-icon
-              v-if="selectedTags.length > 3"
-              icon="times"
-              style="font-size: small"
-            />
-            {{ selectedTags.length > 3 ? selectedTags[3] : "Null" }}
-          </button>
-        </div>
-      </div>
-      <div style="display: block; height: 0.5vh" />
-      <div class="row justify-content-center" style="height: 4vh; ">
-        <div class="col-5">
-          <button
-            type="button"
-            class="btn button-border"
-            :class="{
-              'btn-dark': selectedTags.length > 4,
-              'btn-light': selectedTags.length <= 4,
-            }"
-            :disabled="selectedTags.length <= 4"
-            style="width: 220px"
-            @click="removeEntry(4)"
-          >
-            <font-awesome-icon
-              v-if="selectedTags.length > 4"
-              icon="times"
-              style="font-size: small"
-            />
-            {{ selectedTags.length > 4 ? selectedTags[4] : "Null" }}
-          </button>
-        </div>
-        <div class="col-5">
-          <button
-            type="button"
-            class="btn button-border"
-            :class="{
-              'btn-dark': selectedTags.length > 5,
-              'btn-light': selectedTags.length <= 5,
-            }"
-            :disabled="selectedTags.length <= 5"
-            style="width: 220px"
-            @click="removeEntry(5)"
-          >
-            <font-awesome-icon
-              v-if="selectedTags.length > 5"
-              icon="times"
-              style="font-size: small"
-            />
-            {{ selectedTags.length > 5 ? selectedTags[5] : "Null" }}
-          </button>
-        </div>
-      </div>
-      <div style="display: block; height: 0.5vh" />
-      <div class="row justify-content-center" style="height: 4vh; ">
-        <div class="col-5">
-          <button
-            type="button"
-            class="btn button-border"
-            :class="{
-              'btn-dark': selectedTags.length > 6,
-              'btn-light': selectedTags.length <= 6,
-            }"
-            :disabled="selectedTags.length <= 6"
-            style="width: 220px"
-            @click="removeEntry(6)"
-          >
-            <font-awesome-icon
-              v-if="selectedTags.length > 6"
-              icon="times"
-              style="font-size: small"
-            />
-            {{ selectedTags.length > 6 ? selectedTags[6] : "Null" }}
-          </button>
-        </div>
-        <div class="col-5">
-          <button
-            type="button"
-            class="btn button-border"
-            :class="{
-              'btn-dark': selectedTags.length > 7,
-              'btn-light': selectedTags.length <= 7,
-            }"
-            :disabled="selectedTags.length <= 7"
-            style="width: 220px"
-            @click="removeEntry(7)"
-          >
-            <font-awesome-icon
-              v-if="selectedTags.length > 7"
-              icon="times"
-              style="font-size: small"
-            />
-            {{ selectedTags.length > 7 ? selectedTags[7] : "Null" }}
-          </button>
-        </div>
-      </div>
-      <hr />
-      <div class="row align-items-start" style="height: 5vh; ">
-        <div class="col-6">
-          <h2>Tags</h2>
-        </div>
-      </div>
-      <div
-        class="row justify-content-center"
-        style="height: 60vh; overflow: auto"
-      >
-        <div class="col-8">
-          <div class="accordion" id="accordionPanelsStayOpenExample">
-            <div
-              class="accordion-item"
-              v-for="(value, index) in tags"
-              :key="index"
-            >
-              <h2
-                class="accordion-header"
-                :id="'panelsStayOpen-heading' + index"
-              >
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  :data-bs-target="'#panelsStayOpen-collapse' + index"
-                  aria-expanded="false"
-                  :aria-controls="'panelsStayOpen-collapse' + index"
-                >
-                  {{ value.category }}
-                </button>
-              </h2>
-              <div
-                :id="'panelsStayOpen-collapse' + index"
-                class="accordion-collapse collapse collapse"
-                :aria-labelledby="'panelsStayOpen-heading' + index"
-                data-bs-parent="#accordionPanelsStayOpenExample"
-              >
-                <div
-                  class="accordion-body background"
-                  v-for="(tag, indexTags) in value.tags"
-                  :key="indexTags"
-                >
-                  <div class="input-container">
-                    <input
-                      type="checkbox"
-                      :value="tag"
-                      :id="tag"
-                      v-model="selectedTags"
-                      :disabled="
-                        selectedTags.length >= 8 && !selectedTags.includes(tag)
-                      "
-                    />
-                    <label :for="tag" style="color: white; margin-left: 5px">
-                      {{ tag }}
-                    </label>
-                  </div>
-                </div>
-              </div>
+        <div class="col-5" style="height: 94vh">
+          <div class="row justify-content-start" >
+            <div class="col-12">
+              <h2>Selected Tags</h2>
             </div>
           </div>
-        </div>
-      </div>
-      <div style="display: block; height: 0.5vh" />
-      <hr style="margin: 0" />
-      <div class="row" style="height: 7vh">
-        <div class="col-5">
-          <p>Skip and access next image</p>
-          <button
-            type="button"
-            class="btn btn-light btn-margin button-border"
-            style="width: 8vw"
-            @click="skipTags"
-            :disabled="selectedTags.length >= 4"
-          >
-            Skip
-            <img
-              src="./assets/Skip.png"
-              alt="Skip"
-              style="height: 10px; width: 10px; margin-bottom: 2px;"
-            />
-          </button>
-        </div>
-        <div class="col-1">
-          <div class="vertical"></div>
-        </div>
-        <div class="col-6">
-          <p>Save and access next image</p>
-          <button
-            type="button"
-            :disabled="selectedTags.length < 4"
-            class="btn btn-light btn-margin button-border"
-            style="width: 8vw"
-            @click="saveTags"
-          >
-            Save Image
-            <font-awesome-icon icon="check" style="font-size: small" />
-          </button>
+          <div style="display: block; height: 0.5vh" />
+          <div class="row justify-content-center">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn button-border button-display button-size"
+                :class="{
+                  'btn-dark': selectedTags.length > 0,
+                  'btn-light': selectedTags.length <= 0,
+                }"
+                :disabled="selectedTags.length <= 0"
+                @click="removeEntry(0)"
+              >
+                <font-awesome-icon
+                  v-if="selectedTags.length > 0"
+                  icon="times"
+                  class="button-display"
+                />
+                {{ selectedTags.length > 0 ? selectedTags[0] : "Null" }}
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn button-border button-display button-size"
+                :class="{
+                  'btn-dark': selectedTags.length > 1,
+                  'btn-light': selectedTags.length <= 1,
+                }"
+                :disabled="selectedTags.length <= 1"
+                @click="removeEntry(1)"
+              >
+                <font-awesome-icon
+                  v-if="selectedTags.length > 1"
+                  icon="times"
+                  class="button-display"
+                />
+                {{ selectedTags.length > 1 ? selectedTags[1] : "Null" }}
+              </button>
+            </div>
+          </div>
+          <div style="display: block; height: 0.5vh" />
+          <div class="row justify-content-center">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn button-border button-display button-size"
+                :class="{
+                  'btn-dark': selectedTags.length > 2,
+                  'btn-light': selectedTags.length <= 2,
+                }"
+                :disabled="selectedTags.length <= 2"
+                @click="removeEntry(2)"
+              >
+                <font-awesome-icon
+                  v-if="selectedTags.length > 2"
+                  icon="times"
+                  class="button-display"
+                />
+                {{ selectedTags.length > 2 ? selectedTags[2] : "Null" }}
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn button-border button-display button-size"
+                :class="{
+                  'btn-dark': selectedTags.length > 3,
+                  'btn-light': selectedTags.length <= 3,
+                }"
+                :disabled="selectedTags.length <= 3"
+                @click="removeEntry(3)"
+              >
+                <font-awesome-icon
+                  v-if="selectedTags.length > 3"
+                  icon="times"
+                  class="button-display"
+                />
+                {{ selectedTags.length > 3 ? selectedTags[3] : "Null" }}
+              </button>
+            </div>
+          </div>
+          <div style="display: block; height: 0.5vh" />
+          <div class="row justify-content-center">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn button-border button-display button-size"
+                :class="{
+                  'btn-dark': selectedTags.length > 4,
+                  'btn-light': selectedTags.length <= 4,
+                }"
+                :disabled="selectedTags.length <= 4"
+                @click="removeEntry(4)"
+              >
+                <font-awesome-icon
+                  v-if="selectedTags.length > 4"
+                  icon="times"
+                  class="button-display"
+                />
+                {{ selectedTags.length > 4 ? selectedTags[4] : "Null" }}
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn button-border button-display button-size"
+                :class="{
+                  'btn-dark': selectedTags.length > 5,
+                  'btn-light': selectedTags.length <= 5,
+                }"
+                :disabled="selectedTags.length <= 5"
+                @click="removeEntry(5)"
+              >
+                <font-awesome-icon
+                  v-if="selectedTags.length > 5"
+                  icon="times"
+                  class="button-display"
+                />
+                {{ selectedTags.length > 5 ? selectedTags[5] : "Null" }}
+              </button>
+            </div>
+          </div>
+          <div style="display: block; height: 0.5vh" />
+          <div class="row justify-content-center">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn button-border button-display button-size"
+                :class="{
+                  'btn-dark': selectedTags.length > 6,
+                  'btn-light': selectedTags.length <= 6,
+                }"
+                :disabled="selectedTags.length <= 6"
+                @click="removeEntry(6)"
+              >
+                <font-awesome-icon
+                  v-if="selectedTags.length > 6"
+                  icon="times"
+                  class="button-display"
+                />
+                {{ selectedTags.length > 6 ? selectedTags[6] : "Null" }}
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn button-border button-display button-size"
+                :class="{
+                  'btn-dark': selectedTags.length > 7,
+                  'btn-light': selectedTags.length <= 7,
+                }"
+                :disabled="selectedTags.length <= 7"
+                @click="removeEntry(7)"
+              >
+                <font-awesome-icon
+                  v-if="selectedTags.length > 7"
+                  icon="times"
+                  class="button-display"
+                />
+                {{ selectedTags.length > 7 ? selectedTags[7] : "Null" }}
+              </button>
+            </div>
+          </div>
+          <hr />
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <h2>Tags</h2>
+            </div>
+          </div>
+          <div class="row" style="height: 55%; overflow:auto">
+            <div
+              class=" col-5 card"
+              style="padding: 0; margin-left: 12px; margin-right: 5%"
+            >
+              <div class="card-header">
+                Featured
+              </div>
+              <ul
+                class="list-group list-group-flush"
+                v-for="(value, index) in tags"
+                :key="index"
+              >
+                <li
+                  class="list-group-item"
+                  :class="{ selected: selectedCategory === value.category }"
+                  @click="selectCategory(value.category)"
+                >
+                  {{ value.category }}
+                </li>
+              </ul>
+            </div>
+            <div class=" col-5 card" style="padding: 0">
+              <div class="card-header">
+                Tags
+              </div>
+              <ul
+                class="list-group list-group-flush"
+                v-for="(value, index) in displayTags"
+                :key="index"
+              >
+                <li
+                  class="list-group-item"
+                  :class="{
+                    selected: this.selectedTags.includes(value),
+                    'block-tags':
+                      selectedTags.length > 7 &&
+                      !this.selectedTags.includes(value),
+                  }"
+                  @click="selectTag(value)"
+                >
+                  {{ value }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div style="display: block; height: 0.5%" />
+          <hr style="margin: 0" />
+          <div class="row">
+            <div class="col-5">
+              <button
+                type="button"
+                :class="{
+                  'btn-primary': selectedTags.length < 4,
+                  'btn-secondary': selectedTags.length >= 4,
+                }"
+                class="btn btn-margin button-border final-button-size"
+                style="width: 10vw"
+                @click="skipTags"
+                :disabled="selectedTags.length >= 4"
+              >
+                Skip if not taggable
+              </button>
+            </div>
+            <div class="col-1">
+              <div class="vertical"></div>
+            </div>
+            <div class="col-5">
+              <button
+                type="button"
+                :disabled="selectedTags.length < 4"
+                :class="{
+                  'btn-secondary': selectedTags.length < 4,
+                  'btn-success': selectedTags.length >= 4,
+                }"
+                class="btn btn-margin button-border final-button-size"
+                style="width: 10vw"
+                @click="saveTags"
+              >
+                Save and next
+                <font-awesome-icon icon="check" class="final-button-size" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -382,12 +310,35 @@ export default {
       skipId: [],
       password: "",
       isAuth: false,
+      selectedCategory: "",
+      displayTags: [],
+      isLoad: false,
     };
   },
   methods: {
+    selectCategory(category) {
+      this.selectedCategory = category;
+      this.displayTags = this.tags.filter(
+        (e) => e.category === category
+      )[0].tags;
+    },
+    selectTag(tag) {
+      if (this.selectedTags.includes(tag)) {
+        const index = this.selectedTags.findIndex((e) => e === tag);
+        this.selectedTags.splice(index, 1);
+      } else if (this.selectedTags.length <= 7) {
+        this.selectedTags.push(tag);
+      }
+    },
     onSubmit() {
       if (sha256(this.password) === process.env.VUE_APP_PASSWORD) {
         this.isAuth = true;
+        this.isLoad = true;
+        dataFetch.getImages(this.skipId).then((result) => {
+          this.images = result;
+          this.isLoad = false;
+          dataFetch.analyzePending();
+        });
       }
     },
     removeEntry(position) {
@@ -441,10 +392,11 @@ export default {
           },
         ];
       }
-
+      this.isLoad = true;
       dataFetch.saveItem(this.images[0].element).then(() => {
         dataFetch.getImages(this.skipId).then((result) => {
           this.images = result;
+          this.isLoad = false;
           dataFetch.analyzePending();
         });
       });
@@ -470,20 +422,16 @@ export default {
           "@value": "Save",
         },
       ];
+      this.isLoad = true;
       dataFetch.saveItem(this.images[0].element).then(() => {
         dataFetch.getImages(this.skipId).then((result) => {
           this.selectedTags = [];
           this.images = result;
+          this.isLoad = false;
           dataFetch.analyzePending();
         });
       });
     },
-  },
-  mounted() {
-    dataFetch.getImages(this.skipId).then((result) => {
-      this.images = result;
-      dataFetch.analyzePending();
-    });
   },
 };
 </script>
@@ -499,6 +447,10 @@ export default {
 
 br {
   height: 2px;
+}
+
+h2 {
+  font-size: 1rem;
 }
 
 hr {
@@ -549,5 +501,84 @@ p {
   left: 37.5vw;
   top: 37.5vh;
   position: relative;
+}
+
+.button-display {
+  font-size: 0.75vw;
+}
+
+.button-size {
+  width: 11vw;
+}
+
+.selected {
+  background-color: lightblue;
+}
+
+.block-tags {
+  background-color: lightgray;
+  color: white;
+}
+
+.final-button-size {
+  font-size: 1vw;
+}
+
+.loading {
+  height: 100vh;
+  width: 100vw;
+  background-color: lightgray;
+  z-index: 5;
+}
+
+.loader {
+  position: absolute;
+  left: 45vw;
+  top: 45vh;
+  width: 5vw;
+}
+
+.loader-wheel {
+  animation: spin 1s infinite linear;
+  border: 2px solid rgba(30, 30, 30, 0.5);
+  border-left: 4px solid #fff;
+  border-radius: 50%;
+  height: 50px;
+  margin-bottom: 10px;
+  width: 50px;
+}
+
+.loader-text {
+  color: #fff;
+  font-family: arial, sans-serif;
+}
+
+.loader-text:after {
+  content: "Loading";
+  animation: load 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes load {
+  0% {
+    content: "Loading";
+  }
+  33% {
+    content: "Loading.";
+  }
+  67% {
+    content: "Loading..";
+  }
+  100% {
+    content: "Loading...";
+  }
 }
 </style>
