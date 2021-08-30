@@ -195,7 +195,9 @@
               </button>
             </div>
           </div>
+          <div style="display: block; height: 2%" />
           <hr />
+          <div style="display: block; height: 2%" />
           <div class="row">
             <div
               class=" col-5 card"
@@ -241,8 +243,9 @@
               </ul>
             </div>
           </div>
-          <div style="display: block; height: 0.5%" />
+          <div style="display: block; height: 2%" />
           <hr style="margin: 0" />
+          <div style="display: block; height: 2%" />
           <div class="row">
             <div class="col-5">
               <button
