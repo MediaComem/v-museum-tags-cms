@@ -14,7 +14,7 @@
       <div class="loader-text"></div>
     </div>
   </div>
-  <div style="height: 100vh; widhth: 100vw" v-if="isAuth">
+  <div style="height: 100vh; widhth: 100vw" v-if="isAuth && !isLoad">
     <div class="container-fluid" style="margin: 3vh">
       <div class="row" style="height:94vh" v-if="isAuth">
         <div class="col-7 background" style="height: 94vh">
@@ -196,18 +196,13 @@
             </div>
           </div>
           <hr />
-          <div class="row justify-content-center">
-            <div class="col-12">
-              <h2>Tags</h2>
-            </div>
-          </div>
           <div class="row">
             <div
               class=" col-5 card"
               style="padding: 0; margin-left: 12px; margin-right: 5%; height: 50%"
             >
               <div class="card-header">
-                Featured
+                Categories
               </div>
               <ul class="list-group list-group-flush">
                 <li
@@ -264,9 +259,7 @@
                 Skip if not taggable
               </button>
             </div>
-            <div class="col-1">
-              <div class="vertical"></div>
-            </div>
+            <div class="col-1"></div>
             <div class="col-5">
               <button
                 type="button"
@@ -394,6 +387,7 @@ export default {
       this.isLoad = true;
       dataFetch.saveItem(this.images[0].element).then(() => {
         dataFetch.getImages(this.skipId).then((result) => {
+          this.selectedTags = [];
           this.images = result;
           this.isLoad = false;
           dataFetch.analyzePending();
@@ -442,6 +436,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+li {
+  text-align: start;
 }
 
 br {
@@ -521,6 +519,7 @@ p {
 
 .final-button-size {
   font-size: 1vw;
+  font-weight: bold;
 }
 
 .loading {
