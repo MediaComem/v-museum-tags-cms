@@ -87,16 +87,9 @@ export default {
       (today.getMonth() + 1) +
       "-" +
       today.getFullYear();
-    let req =
-      process.env.VUE_APP_FETCH_BASE +
-      "per_page=1&property%5B0%5D%5Bjoiner%5D=and&property%5B0%5D%5Bproperty%5D=15&property%5B0%5D%5Btype%5D=ex&property%5B1%5D%5Bjoiner%5D=and&property%5B1%5D%5Bproperty%5D=6&property%5B1%5D%5Btype%5D=eq&property%5B1%5D%5Btext%5D=" +
-      user +
-      "&property%5B2%5D%5Bjoiner%5D=and&property%5B2%5D%5Bproperty%5D=46&property%5B2%5D%5Btype%5D=eq&property%5B2%5D%5Btext%5D=" +
-      date;
-    const { headers } = await request(req);
+    let req;
     const dataProcessing = [];
-    const nbPage = Math.ceil(headers["omeka-s-total-results"] / 1000);
-    for (let i = 1; i <= nbPage; i++) {
+    for (let i = 1; i <= 3; i++) {
       req =
         process.env.VUE_APP_FETCH_BASE +
         "per_page=1000&property%5B0%5D%5Bjoiner%5D=and&property%5B0%5D%5Bproperty%5D=15&property%5B0%5D%5Btype%5D=ex&property%5B1%5D%5Bjoiner%5D=and&property%5B1%5D%5Bproperty%5D=6&property%5B1%5D%5Btype%5D=eq&property%5B1%5D%5Btext%5D=" +
@@ -117,14 +110,9 @@ export default {
   },
 
   async getImagessByUser(user) {
-    let req =
-      process.env.VUE_APP_FETCH_BASE +
-      "per_page=1&property%5B0%5D%5Bjoiner%5D=and&property%5B0%5D%5Bproperty%5D=15&property%5B0%5D%5Btype%5D=ex&&property%5B1%5D%5Bjoiner%5D=and&property%5B1%5D%5Bproperty%5D=6&property%5B1%5D%5Btype%5D=eq&property%5B1%5D%5Btext%5D=" +
-      user;
-    const { headers } = await request(req);
+    let req;
     const dataProcessing = [];
-    const nbPage = Math.ceil(headers["omeka-s-total-results"] / 1000);
-    for (let i = 1; i <= nbPage; i++) {
+    for (let i = 1; i <= 3; i++) {
       req =
         process.env.VUE_APP_FETCH_BASE +
         "per_page=1000&property%5B0%5D%5Bjoiner%5D=and&property%5B0%5D%5Bproperty%5D=15&property%5B0%5D%5Btype%5D=ex&property%5B1%5D%5Bjoiner%5D=and&property%5B1%5D%5Bproperty%5D=6&property%5B1%5D%5Btype%5D=eq&property%5B1%5D%5Btext%5D=" +
@@ -143,14 +131,9 @@ export default {
   },
 
   async getImagesForModal(user) {
-    let req =
-      process.env.VUE_APP_FETCH_BASE +
-      "per_page=1&property%5B0%5D%5Bjoiner%5D=and&property%5B0%5D%5Bproperty%5D=15&property%5B0%5D%5Btype%5D=ex&&property%5B1%5D%5Bjoiner%5D=and&property%5B1%5D%5Bproperty%5D=6&property%5B1%5D%5Btype%5D=eq&property%5B1%5D%5Btext%5D=" +
-      user;
-    const { headers } = await request(req);
+    let req;
     const dataProcessing = [];
-    const nbPage = Math.ceil(headers["omeka-s-total-results"] / 1000);
-    for (let i = 1; i <= nbPage; i++) {
+    for (let i = 1; i <= 3; i++) {
       req =
         process.env.VUE_APP_FETCH_BASE +
         "per_page=1000&property%5B0%5D%5Bjoiner%5D=and&property%5B0%5D%5Bproperty%5D=15&property%5B0%5D%5Btype%5D=ex&property%5B1%5D%5Bjoiner%5D=and&property%5B1%5D%5Bproperty%5D=6&property%5B1%5D%5Btype%5D=eq&property%5B1%5D%5Btext%5D=" +
