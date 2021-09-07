@@ -3,7 +3,10 @@
     <form class="login" style="padding: 5vh">
       <div>
         <h2>Login</h2>
+        <input type="text" v-model="user" placeholder="user" />
+        <br />
         <input type="password" v-model="password" placeholder="Password" />
+        <br />
         <button v-on:click="onSubmit">Log in</button>
       </div>
     </form>
@@ -14,15 +17,158 @@
       <div class="loader-text"></div>
     </div>
   </div>
-  <div style="height: 100vh; widhth: 100vw" v-if="isAuth && !isLoad">
+  <!-- Admin view -->
+  <div style="height: 100vh; widhth: 100vw" v-if="isAuth && !isLoad && isAdmin">
+    <div class="container-fluid" style="margin-top: 3vh">
+      <div class="row justify-content-center" style="height:94vh">
+        <div class="col-10">
+          <table class="table table-hover" style="height:94vh">
+            <thead>
+              <tr>
+                <th scope="col">User</th>
+                <th scope="col">Daily Image</th>
+                <th scope="col">Daily Tags</th>
+                <th scope="col">Total Images</th>
+                <th scope="col">Total Tags</th>
+              </tr>
+            </thead>
+            <tbody
+              v-for="(value, index) in adminInformation"
+              :key="index"
+              style="vertical-align: middle;"
+            >
+              <tr @click="loadUserImage(value.user)">
+                <th>{{ value.user }}</th>
+                <th>{{ value.todayImage }}</th>
+                <th>{{ value.todayTags }}</th>
+                <th>{{ value.totalImage }}</th>
+                <th>{{ value.totalTags }}</th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Part 1 -->
+    <div
+      class="modal fade"
+      id="exampleModalToggle"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalToggleLabel">
+              {{ modalUser }}
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row align-items-center" style="height: 25vh" v-for="(value, index) in modalImages" :key="index">
+              <div class="col-2">
+                <img style="height: 25vh" :src="value.thumbnail.large" @click="loadBigImage(value)"/>
+              </div>
+              <div class="col-2">
+                <p>{{ value.id }}</p>
+              </div>
+              <div class="col-3">
+                <p>{{ value.state }}</p>
+              </div>
+              <div class="col-5">
+                <ul>
+                  <li v-for="(tag, i) in value.tags" :key="i">{{ tag["@value"] }}</li>
+                </ul>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              @click="closeUserImage()"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- Modal Part 2 -->
+    <div
+      class="modal fade"
+      id="exampleModalToggle2"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel2"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalToggleLabel2">
+              {{ modalUser }}
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row align-items-center">
+              <div class="col-9">
+                <img style="height: 80vh" :src="bigModalImage"/>
+              </div>
+              <div class="col-3">
+                <ul>
+                  <li v-for="(tag, i) in bigModalTags" :key="i">{{ tag["@value"] }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              @click="closeBigModal()"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Not Admin view -->
+  <div
+    style="height: 100vh; widhth: 100vw"
+    v-if="isAuth && !isLoad && !isAdmin"
+  >
     <div class="container-fluid" style="margin: 3vh">
       <div class="row" style="height:94vh" v-if="isAuth">
         <div class="col-7 background" style="height: 94vh">
+          <p v-if="images" style="color: white">
+            ID: {{ images[0].id }} - Nb Images: {{ todayImages }} - Nb Tags:
+            {{ todayTags }}
+          </p>
+          <p v-if="!images" style="color: white">
+            Nb Images: {{ todayImages }} - Nb Tags: {{ todayTags }}
+          </p>
           <img
             v-if="images"
             :src="images[0].image.large"
             class="img-fluid"
-            style="height: 94vh"
+            style="height: 92vh"
           />
         </div>
         <div class="col-5" style="height: 94vh">
@@ -290,6 +436,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import { sha256 } from "js-sha256";
+import { Modal } from "bootstrap/dist/js/bootstrap.bundle.js";
 
 import myFile from "./assets/tags.json";
 
@@ -301,13 +448,24 @@ export default {
     return {
       tags: myFile,
       images: undefined,
+      todayImages: 0,
+      todayTags: 0,
+      adminInformation: [],
       selectedTags: [],
       skipId: [],
       password: "",
       isAuth: false,
+      isAdmin: false,
       selectedCategory: "",
       displayTags: [],
       isLoad: false,
+      user: "",
+      nextImage: undefined,
+      isInitial: true,
+      modalUser: "",
+      modalImages: undefined,
+      bigModalTags: undefined,
+      bigModalImage: undefined,
     };
   },
   methods: {
@@ -325,25 +483,136 @@ export default {
         this.selectedTags.push(tag);
       }
     },
+    loadPassword(user) {
+      if (user === "admin") {
+        this.isAdmin = true;
+        return process.env["VUE_APP_ADMIN_PASSWORD"];
+      } else if (user.slice(0, 7) === "vmuseum") {
+        const id = user.slice(7, 9);
+        return process.env["VUE_APP_USER_PASSWORD_" + id];
+      }
+    },
     onSubmit() {
-      if (sha256(this.password) === process.env.VUE_APP_PASSWORD) {
+      if (sha256(this.password) === this.loadPassword(this.user)) {
+        this.password = "";
         this.isAuth = true;
         this.isLoad = true;
-        dataFetch.getImages(this.skipId).then((result) => {
-          this.images = result;
-          this.isLoad = false;
-          dataFetch.analyzePending();
-        });
+        if (this.isAdmin) {
+          this.loadAdminInformation();
+          setInterval(() => this.loadAdminInformation(), 120000);
+        } else {
+          this.loadData();
+          this.loadImagePerDay();
+        }
+      } else {
+        this.isAdmin = false;
       }
+    },
+    loadUserImage(user) {
+      const myModal = new Modal(document.getElementById("exampleModalToggle"));
+      this.modalUser = user;
+      dataFetch.getImagesForModal(user).then((result) => {
+        this.modalImages = result;
+      });
+      myModal.show();
+    },
+    closeUserImage() {
+      this.modalImages = undefined;
+    },
+    loadBigImage(image) {
+      const myModal = new Modal(document.getElementById("exampleModalToggle2"));
+      this.bigModalImage = image.thumbnail.large;
+      this.bigModalTags = image.tags;
+      myModal.show();
+    },
+    closeBigModal() {
+      this.bigModalImage = undefined;
+      this.bigModalTags = undefined;
+    },
+    loadAdminInformation() {
+      const users = [
+        "vmuseum1",
+        "vmuseum2",
+        "vmuseum3",
+        "vmuseum4",
+        "vmuseum5",
+        "vmuseum6",
+        "vmuseum7",
+        "vmuseum8",
+        "vmuseum9",
+        "vmuseum10",
+        "vmuseum11",
+      ];
+      users.forEach((user, index) => {
+        if (this.adminInformation.length !== users.length) {
+          this.adminInformation.push({
+            user: user,
+            todayImage: 0,
+            todayTags: 0,
+            totalImage: 0,
+            totalTags: 0,
+          });
+        }
+        dataFetch.getTodayImagessByUser(user).then((result) => {
+          this.adminInformation[index].todayImage = result.nbImage;
+          this.adminInformation[index].todayTags = result.nbTags;
+          dataFetch.getImagessByUser(user).then((result) => {
+            this.adminInformation[index].totalImage = result.nbImage;
+            this.adminInformation[index].totalTags = result.nbTags;
+          });
+        });
+      });
+      this.isLoad = false;
+    },
+    loadImagePerDay() {
+      dataFetch.getTodayImagessByUser(this.user).then((result) => {
+        this.todayImages = result.nbImage;
+        this.todayTags = result.nbTags;
+      });
+    },
+    loadData() {
+      let skipId = undefined;
+      if (this.images) {
+        skipId = this.images[0].element["dcterms:identifier"][0]["@value"];
+      }
+      dataFetch.getImages(this.user, skipId).then((result) => {
+        if (result.length === 0) {
+          dataFetch.getSkipImage(this.user, skipId).then((result) => {
+            if (result.length === 0) {
+              if (this.images) {
+                this.nextImage = undefined;
+              } else {
+                this.images = undefined;
+              }
+            } else {
+              if (this.isInitial) {
+                this.selectedTags = [];
+                this.images = result;
+                this.isInitial = false;
+                this.loadData();
+              } else {
+                this.nextImage = result;
+              }
+            }
+            this.isLoad = false;
+          });
+        } else {
+          if (this.isInitial) {
+            this.selectedTags = [];
+            this.images = result;
+            this.isInitial = false;
+            this.loadData();
+          } else {
+            this.nextImage = result;
+          }
+          this.isLoad = false;
+        }
+      });
     },
     removeEntry(position) {
       this.selectedTags.splice(position, 1);
     },
     skipTags() {
-      this.skipId.push(
-        this.images[0].element["dcterms:identifier"][0]["@value"]
-      );
-      this.skipId = [...new Set(this.skipId)];
       this.images[0].element["dcterms:rights"] = [
         {
           type: "literal",
@@ -356,7 +625,7 @@ export default {
       const skipElement = this.images[0].element["dcterms:rightsHolder"];
       if (skipElement) {
         const nbSkip = +skipElement[0]["@value"] + 1;
-        if (nbSkip >= 3) {
+        if (nbSkip >= 2) {
           this.images[0].element["dcterms:rights"] = [
             {
               type: "literal",
@@ -367,15 +636,6 @@ export default {
             },
           ];
         }
-        this.images[0].element["dcterms:rightsHolder"] = [
-          {
-            type: "literal",
-            property_id: 50,
-            property_label: "Rights",
-            is_public: true,
-            "@value": nbSkip.toString(),
-          },
-        ];
       } else {
         this.images[0].element["dcterms:rightsHolder"] = [
           {
@@ -387,14 +647,31 @@ export default {
           },
         ];
       }
+      let date = new Date();
+      this.images[0].element["dcterms:educationLevel"] = [
+        {
+          type: "literal",
+          property_id: 46,
+          property_label: "Audience Education Level",
+          is_public: true,
+          "@value": `${date.getDate() +
+            "-" +
+            (date.getMonth() + 1) +
+            "-" +
+            date.getFullYear()}`,
+        },
+      ];
+      this.todayImages = this.todayImages + 1;
       this.isLoad = true;
       dataFetch.saveItem(this.images[0].element).then(() => {
-        dataFetch.getImages(this.skipId).then((result) => {
-          this.selectedTags = [];
-          this.images = result;
+        this.images = undefined;
+        if (this.nextImage) {
+          this.images = this.nextImage;
+          this.nextImage = undefined;
           this.isLoad = false;
-          dataFetch.analyzePending();
-        });
+        }
+        this.selectedTags = [];
+        this.loadData();
       });
     },
     saveTags() {
@@ -418,14 +695,32 @@ export default {
           "@value": "Save",
         },
       ];
+      let date = new Date();
+      this.images[0].element["dcterms:educationLevel"] = [
+        {
+          type: "literal",
+          property_id: 46,
+          property_label: "Audience Education Level",
+          is_public: true,
+          "@value": `${date.getDate() +
+            "-" +
+            (date.getMonth() + 1) +
+            "-" +
+            date.getFullYear()}`,
+        },
+      ];
+      this.todayImages = this.todayImages + 1;
+      this.todayTags = this.todayTags + this.selectedTags.length;
       this.isLoad = true;
       dataFetch.saveItem(this.images[0].element).then(() => {
-        dataFetch.getImages(this.skipId).then((result) => {
-          this.selectedTags = [];
-          this.images = result;
+        this.images = undefined;
+        if (this.nextImage) {
+          this.images = this.nextImage;
+          this.nextImage = undefined;
           this.isLoad = false;
-          dataFetch.analyzePending();
-        });
+        }
+        this.selectedTags = [];
+        this.loadData();
       });
     },
   },
@@ -439,6 +734,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+ul {
+  list-style-type: none;
 }
 
 li {
