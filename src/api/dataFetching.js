@@ -1,18 +1,5 @@
 import axios from "axios";
 
-const request = async (url) => {
-  return axios.get(url);
-};
-
-const save = async (item) => {
-  return axios.put(process.env.VUE_APP_DIRECT_REQUEST + item["o:id"], item, {
-    params: {
-      key_identity: process.env.VUE_APP_KEY_IDENTITY,
-      key_credential: process.env.VUE_APP_KEY_CREDENTIAL,
-    },
-  });
-};
-
 const parseId = (element) => {
   return element["o:id"];
 };
@@ -46,37 +33,59 @@ const countImageAndTags = (data) => {
 
 export default {
   async getImages(user, skipId) {
-    let req =
-      process.env.VUE_APP_FETCH_BASE +
-      "per_page=1&property%5B0%5D%5Bjoiner%5D=and&property%5B0%5D%5Bproperty%5D=15&property%5B0%5D%5Btype%5D=nex&property%5B1%5D%5Bjoiner%5D=and&property%5B1%5D%5Bproperty%5D=6&property%5B1%5D%5Btype%5D=eq&property%5B1%5D%5Btext%5D=" +
-      user;
+    const params = {
+      params: {
+        per_page: 1,
+        "property[0][joiner]": "and",
+        "property[0][property]": 15,
+        "property[0][type]": "nex",
+        "property[1][joiner]": "and",
+        "property[1][property]": 6,
+        "property[1][type]": "eq",
+        "property[1][text]": user,
+      },
+    };
     if (skipId) {
-      req =
-        req +
-        "&property%5B2%5D%5Bjoiner%5D=and&property%5B2%5D%5Bproperty%5D=10&property%5B2%5D%5Btype%5D=neq&property%5B2%5D%5Btext%5D=" +
-        skipId;
+      params.params["property[2][joiner]"] = "and";
+      params.params["property[2][property]"] = "10";
+      params.params["property[2][type]"] = "neq";
+      params.params["property[2][text]"] = skipId;
     }
-    const { data } = await request(req);
+    const { data } = await axios.get(process.env.VUE_APP_FETCH_BASE, params);
     return parseImages(data);
   },
 
   async getSkipImage(user, skipId) {
-    let req =
-      process.env.VUE_APP_FETCH_BASE +
-      "per_page=1&property%5B0%5D%5Bjoiner%5D=and&property%5B0%5D%5Bproperty%5D=15&property%5B0%5D%5Btype%5D=eq&property%5B0%5D%5Btext%5D=Skip&property%5B1%5D%5Bjoiner%5D=and&property%5B1%5D%5Bproperty%5D=6&property%5B1%5D%5Btype%5D=eq&property%5B1%5D%5Btext%5D=" +
-      user;
+    const params = {
+      params: {
+        per_page: 1,
+        "property[0][joiner]": "and",
+        "property[0][property]": 15,
+        "property[0][type]": "eq",
+        "property[0][text]": "Skip",
+        "property[1][joiner]": "and",
+        "property[1][property]": 6,
+        "property[1][type]": "eq",
+        "property[1][text]": user,
+      },
+    };
     if (skipId) {
-      req =
-        req +
-        "&property%5B2%5D%5Bjoiner%5D=and&property%5B2%5D%5Bproperty%5D=10&property%5B2%5D%5Btype%5D=neq&property%5B2%5D%5Btext%5D=" +
-        skipId;
+      params.params["property[2][joiner]"] = "and";
+      params.params["property[2][property]"] = "10";
+      params.params["property[2][type]"] = "neq";
+      params.params["property[2][text]"] = skipId;
     }
-    const { data } = await request(req);
+    const { data } = await axios.get(process.env.VUE_APP_FETCH_BASE, params);
     return parseImages(data);
   },
 
   async saveItem(item) {
-    return save(item);
+    return axios.put(process.env.VUE_APP_DIRECT_REQUEST + item["o:id"], item, {
+      params: {
+        key_identity: process.env.VUE_APP_KEY_IDENTITY,
+        key_credential: process.env.VUE_APP_KEY_CREDENTIAL,
+      },
+    });
   },
 
   async getTodayImagessByUser(user) {
@@ -87,18 +96,27 @@ export default {
       (today.getMonth() + 1) +
       "-" +
       today.getFullYear();
-    let req;
     const dataProcessing = [];
+    // The reason behind 3 is that each user has 3000 images and each get retrieve 1000 images so 3 to have all images.
     for (let i = 1; i <= 3; i++) {
-      req =
-        process.env.VUE_APP_FETCH_BASE +
-        "per_page=1000&property%5B0%5D%5Bjoiner%5D=and&property%5B0%5D%5Bproperty%5D=15&property%5B0%5D%5Btype%5D=ex&property%5B1%5D%5Bjoiner%5D=and&property%5B1%5D%5Bproperty%5D=6&property%5B1%5D%5Btype%5D=eq&property%5B1%5D%5Btext%5D=" +
-        user +
-        "&property%5B2%5D%5Bjoiner%5D=and&property%5B2%5D%5Bproperty%5D=46&property%5B2%5D%5Btype%5D=eq&property%5B2%5D%5Btext%5D=" +
-        date +
-        "&page=" +
-        i;
-      let { data } = await request(req);
+      const params = {
+        params: {
+          per_page: 1000,
+          "property[0][joiner]": "and",
+          "property[0][property]": 15,
+          "property[0][type]": "ex",
+          "property[1][joiner]": "and",
+          "property[1][property]": 6,
+          "property[1][type]": "eq",
+          "property[1][text]": user,
+          "property[2][joiner]": "and",
+          "property[2][property]": 46,
+          "property[2][type]": "eq",
+          "property[2][text]": date,
+          "page": i
+        },
+      };
+      const { data } = await axios.get(process.env.VUE_APP_FETCH_BASE, params);
       dataProcessing.push(countImageAndTags(data));
     }
     const result = { nbImage: 0, nbTags: 0 };
@@ -110,16 +128,23 @@ export default {
   },
 
   async getImagessByUser(user) {
-    let req;
     const dataProcessing = [];
+    // The reason behind 3 is that each user has 3000 images and each get retrieve 1000 images so 3 to have all images.
     for (let i = 1; i <= 3; i++) {
-      req =
-        process.env.VUE_APP_FETCH_BASE +
-        "per_page=1000&property%5B0%5D%5Bjoiner%5D=and&property%5B0%5D%5Bproperty%5D=15&property%5B0%5D%5Btype%5D=ex&property%5B1%5D%5Bjoiner%5D=and&property%5B1%5D%5Bproperty%5D=6&property%5B1%5D%5Btype%5D=eq&property%5B1%5D%5Btext%5D=" +
-        user +
-        "&page=" +
-        i;
-      let { data } = await request(req);
+      const params = {
+        params: {
+          per_page: 1000,
+          "property[0][joiner]": "and",
+          "property[0][property]": 15,
+          "property[0][type]": "ex",
+          "property[1][joiner]": "and",
+          "property[1][property]": 6,
+          "property[1][type]": "eq",
+          "property[1][text]": user,
+          "page": i
+        },
+      };
+      const { data } = await axios.get(process.env.VUE_APP_FETCH_BASE, params);
       dataProcessing.push(countImageAndTags(data));
     }
     const result = { nbImage: 0, nbTags: 0 };
@@ -131,16 +156,23 @@ export default {
   },
 
   async getImagesForModal(user) {
-    let req;
     const dataProcessing = [];
+    // The reason behind 3 is that each user has 3000 images and each get retrieve 1000 images so 3 to have all images.
     for (let i = 1; i <= 3; i++) {
-      req =
-        process.env.VUE_APP_FETCH_BASE +
-        "per_page=1000&property%5B0%5D%5Bjoiner%5D=and&property%5B0%5D%5Bproperty%5D=15&property%5B0%5D%5Btype%5D=ex&property%5B1%5D%5Bjoiner%5D=and&property%5B1%5D%5Bproperty%5D=6&property%5B1%5D%5Btype%5D=eq&property%5B1%5D%5Btext%5D=" +
-        user +
-        "&page=" +
-        i;
-      let { data } = await request(req);
+      const params = {
+        params: {
+          per_page: 1000,
+          "property[0][joiner]": "and",
+          "property[0][property]": 15,
+          "property[0][type]": "ex",
+          "property[1][joiner]": "and",
+          "property[1][property]": 6,
+          "property[1][type]": "eq",
+          "property[1][text]": user,
+          "page": i
+        },
+      };
+      const { data } = await axios.get(process.env.VUE_APP_FETCH_BASE, params);
       dataProcessing.push(data);
     }
     const result = [];
@@ -152,7 +184,7 @@ export default {
           state: item["dcterms:rights"][0]["@value"],
           tags: item["dcterms:coverage"],
         });
-      })
+      });
     });
     return result;
   },

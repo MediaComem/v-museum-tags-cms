@@ -71,9 +71,18 @@
             ></button>
           </div>
           <div class="modal-body">
-            <div class="row align-items-center" style="height: 25vh" v-for="(value, index) in modalImages" :key="index">
+            <div
+              class="row align-items-center"
+              style="height: 25vh"
+              v-for="(value, index) in modalImages"
+              :key="index"
+            >
               <div class="col-2">
-                <img style="height: 25vh" :src="value.thumbnail.large" @click="loadBigImage(value)"/>
+                <img
+                  style="height: 25vh; cursor: pointer;"
+                  :src="value.thumbnail.large"
+                  @click="loadBigImage(value)"
+                />
               </div>
               <div class="col-2">
                 <p>{{ value.id }}</p>
@@ -83,10 +92,12 @@
               </div>
               <div class="col-5">
                 <ul>
-                  <li v-for="(tag, i) in value.tags" :key="i">{{ tag["@value"] }}</li>
+                  <li v-for="(tag, i) in value.tags" :key="i">
+                    {{ tag["@value"] }}
+                  </li>
                 </ul>
               </div>
-              <hr>
+              <hr />
             </div>
           </div>
           <div class="modal-footer">
@@ -102,7 +113,7 @@
         </div>
       </div>
     </div>
-  <!-- Modal Part 2 -->
+    <!-- Modal Part 2 -->
     <div
       class="modal fade"
       id="exampleModalToggle2"
@@ -126,11 +137,13 @@
           <div class="modal-body">
             <div class="row align-items-center">
               <div class="col-9">
-                <img style="height: 80vh" :src="bigModalImage"/>
+                <img style="height: 80vh" :src="bigModalImage" />
               </div>
               <div class="col-3">
                 <ul>
-                  <li v-for="(tag, i) in bigModalTags" :key="i">{{ tag["@value"] }}</li>
+                  <li v-for="(tag, i) in bigModalTags" :key="i">
+                    {{ tag["@value"] }}
+                  </li>
                 </ul>
               </div>
             </div>
@@ -469,20 +482,7 @@ export default {
     };
   },
   methods: {
-    selectCategory(category) {
-      this.selectedCategory = category;
-      this.displayTags = this.tags.filter(
-        (e) => e.category === category
-      )[0].tags;
-    },
-    selectTag(tag) {
-      if (this.selectedTags.includes(tag)) {
-        const index = this.selectedTags.findIndex((e) => e === tag);
-        this.selectedTags.splice(index, 1);
-      } else if (this.selectedTags.length <= 7) {
-        this.selectedTags.push(tag);
-      }
-    },
+    // Login methods
     loadPassword(user) {
       if (user === "admin") {
         this.isAdmin = true;
@@ -508,6 +508,22 @@ export default {
         this.isAdmin = false;
       }
     },
+    // Those two methods are related to the management of tags view
+    selectCategory(category) {
+      this.selectedCategory = category;
+      this.displayTags = this.tags.filter(
+        (e) => e.category === category
+      )[0].tags;
+    },
+    selectTag(tag) {
+      if (this.selectedTags.includes(tag)) {
+        const index = this.selectedTags.findIndex((e) => e === tag);
+        this.selectedTags.splice(index, 1);
+      } else if (this.selectedTags.length <= 7) {
+        this.selectedTags.push(tag);
+      }
+    },
+    // Those four methods are related to the modals
     loadUserImage(user) {
       const myModal = new Modal(document.getElementById("exampleModalToggle"));
       this.modalUser = user;
@@ -529,6 +545,7 @@ export default {
       this.bigModalImage = undefined;
       this.bigModalTags = undefined;
     },
+    // This method loads the general information for the admin view
     loadAdminInformation() {
       const users = [
         "vmuseum1",
@@ -571,13 +588,17 @@ export default {
       });
     },
     loadData() {
+      // This parameter is used to skip the current item and pre-load the next one.
       let skipId = undefined;
       if (this.images) {
         skipId = this.images[0].element["dcterms:identifier"][0]["@value"];
       }
+      // Load an image for the current user and skip the current id iff necessary
       dataFetch.getImages(this.user, skipId).then((result) => {
+        // In case of no result, try to load the skipped items
         if (result.length === 0) {
           dataFetch.getSkipImage(this.user, skipId).then((result) => {
+            // If no skip item, all the data have tags
             if (result.length === 0) {
               if (this.images) {
                 this.nextImage = undefined;
@@ -585,6 +606,7 @@ export default {
                 this.images = undefined;
               }
             } else {
+              // In case of it's the first load, setup the page parameters
               if (this.isInitial) {
                 this.selectedTags = [];
                 this.images = result;
@@ -597,6 +619,7 @@ export default {
             this.isLoad = false;
           });
         } else {
+          // In case of it's the first load, setup the page parameters
           if (this.isInitial) {
             this.selectedTags = [];
             this.images = result;
@@ -613,6 +636,8 @@ export default {
       this.selectedTags.splice(position, 1);
     },
     skipTags() {
+      // The data is received like an array it's the reason why the data is stored like an array.
+      // In this case, we have only one element in the array. It's the reason behind the 0
       this.images[0].element["dcterms:rights"] = [
         {
           type: "literal",
@@ -661,7 +686,9 @@ export default {
             date.getFullYear()}`,
         },
       ];
+      // Increment those data to not get the data from the DB
       this.todayImages = this.todayImages + 1;
+      // Save then load the preload image then preload the next image
       this.isLoad = true;
       dataFetch.saveItem(this.images[0].element).then(() => {
         this.images = undefined;
@@ -675,6 +702,8 @@ export default {
       });
     },
     saveTags() {
+      // The data is received like an array it's the reason why the data is stored like an array.
+      // In this case, we have only one element in the array. It's the reason behind the 0
       const newTags = [];
       this.selectedTags.forEach((element) => {
         newTags.push({
@@ -709,8 +738,10 @@ export default {
             date.getFullYear()}`,
         },
       ];
+      // Increment those data to not get the data from the DB
       this.todayImages = this.todayImages + 1;
       this.todayTags = this.todayTags + this.selectedTags.length;
+       // Save then load the preload image then preload the next image
       this.isLoad = true;
       dataFetch.saveItem(this.images[0].element).then(() => {
         this.images = undefined;
