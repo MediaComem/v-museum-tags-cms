@@ -32,6 +32,11 @@ const countImageAndTags = (data) => {
 };
 
 export default {
+  async getImageByID(id) {
+    const { data } = await axios.get(process.env.VUE_APP_DIRECT_REQUEST + id);
+    return data;
+  },
+
   async getImages(user, skipId) {
     const params = {
       params: {

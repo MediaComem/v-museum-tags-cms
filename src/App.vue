@@ -90,12 +90,21 @@
               <div class="col-3">
                 <p>{{ value.state }}</p>
               </div>
-              <div class="col-5">
+              <div class="col-4">
                 <ul>
                   <li v-for="(tag, i) in value.tags" :key="i">
                     {{ tag["@value"] }}
                   </li>
                 </ul>
+              </div>
+              <div class="col-1">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  @click="resetTags(value.id, 1)"
+                >
+                  Reset
+                </button>
               </div>
               <hr />
             </div>
@@ -139,12 +148,21 @@
               <div class="col-9">
                 <img style="height: 80vh" :src="bigModalImage" />
               </div>
-              <div class="col-3">
+              <div class="col-2">
                 <ul>
                   <li v-for="(tag, i) in bigModalTags" :key="i">
                     {{ tag["@value"] }}
                   </li>
                 </ul>
+              </div>
+              <div class="col-1">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  @click="resetTags(bigModalId, 2)"
+                >
+                  Reset
+                </button>
               </div>
             </div>
           </div>
@@ -410,13 +428,13 @@
               <button
                 type="button"
                 :class="{
-                  'btn-primary': selectedTags.length < 4,
-                  'btn-secondary': selectedTags.length >= 4,
+                  'btn-primary': selectedTags.length < 3,
+                  'btn-secondary': selectedTags.length >= 3,
                 }"
                 class="btn btn-margin button-border final-button-size"
                 style="width: 10vw"
                 @click="skipTags"
-                :disabled="selectedTags.length >= 4"
+                :disabled="selectedTags.length >= 3"
               >
                 Skip if not taggable
               </button>
@@ -425,10 +443,10 @@
             <div class="col-5">
               <button
                 type="button"
-                :disabled="selectedTags.length < 4"
+                :disabled="selectedTags.length < 3"
                 :class="{
-                  'btn-secondary': selectedTags.length < 4,
-                  'btn-success': selectedTags.length >= 4,
+                  'btn-secondary': selectedTags.length < 3,
+                  'btn-success': selectedTags.length >= 3,
                 }"
                 class="btn btn-margin button-border final-button-size"
                 style="width: 10vw"
@@ -479,6 +497,8 @@ export default {
       modalImages: undefined,
       bigModalTags: undefined,
       bigModalImage: undefined,
+      bigModalId: undefined,
+      secondModal: undefined,
     };
   },
   methods: {
@@ -525,25 +545,48 @@ export default {
     },
     // Those four methods are related to the modals
     loadUserImage(user) {
-      const myModal = new Modal(document.getElementById("exampleModalToggle"));
+      const firstModal = new Modal(
+        document.getElementById("exampleModalToggle")
+      );
       this.modalUser = user;
       dataFetch.getImagesForModal(user).then((result) => {
         this.modalImages = result;
       });
-      myModal.show();
+      firstModal.show();
     },
     closeUserImage() {
       this.modalImages = undefined;
     },
     loadBigImage(image) {
-      const myModal = new Modal(document.getElementById("exampleModalToggle2"));
+      this.secondModal = new Modal(document.getElementById("exampleModalToggle2"));
       this.bigModalImage = image.thumbnail.large;
       this.bigModalTags = image.tags;
-      myModal.show();
+      this.bigModalId = image.id;
+      this.secondModal.show();
     },
     closeBigModal() {
       this.bigModalImage = undefined;
       this.bigModalTags = undefined;
+      this.bigModalId = undefined;
+      this.secondModal = undefined;
+    },
+    resetTags(id, modalId) {
+      if (confirm("Are you sure you want to reset this image?")) {
+        dataFetch.getImageByID(id).then((data) => {
+          data["dcterms:coverage"] = [];
+          data["dcterms:rights"] = [];
+          data["dcterms:rightsHolder"] = [];
+          data["dcterms:educationLevel"] = [];
+          dataFetch.saveItem(data).then(() => {
+            const index = this.modalImages.findIndex((e) => e.id === id);
+            this.modalImages.splice(index, 1);
+            if (modalId === 2) {
+              this.secondModal.hide();
+              this.closeBigModal();
+            }
+          });
+        });
+      }
     },
     // This method loads the general information for the admin view
     loadAdminInformation() {
@@ -558,7 +601,6 @@ export default {
         "vmuseum8",
         "vmuseum9",
         "vmuseum10",
-        "vmuseum11",
       ];
       users.forEach((user, index) => {
         if (this.adminInformation.length !== users.length) {
@@ -741,7 +783,7 @@ export default {
       // Increment those data to not get the data from the DB
       this.todayImages = this.todayImages + 1;
       this.todayTags = this.todayTags + this.selectedTags.length;
-       // Save then load the preload image then preload the next image
+      // Save then load the preload image then preload the next image
       this.isLoad = true;
       dataFetch.saveItem(this.images[0].element).then(() => {
         this.images = undefined;
