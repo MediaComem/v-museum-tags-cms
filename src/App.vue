@@ -410,7 +410,7 @@
                   :class="{
                     selected: this.selectedTags.includes(value),
                     'block-tags':
-                      selectedTags.length > 7 &&
+                      selectedTags.length >= MaxNBTags &&
                       !this.selectedTags.includes(value),
                   }"
                   @click="selectTag(value)"
@@ -428,13 +428,13 @@
               <button
                 type="button"
                 :class="{
-                  'btn-primary': selectedTags.length < 3,
-                  'btn-secondary': selectedTags.length >= 3,
+                  'btn-primary': selectedTags.length < MinNBTags,
+                  'btn-secondary': selectedTags.length >= MinNBTags,
                 }"
                 class="btn btn-margin button-border final-button-size"
                 style="width: 10vw"
                 @click="skipTags"
-                :disabled="selectedTags.length >= 3"
+                :disabled="selectedTags.length >= MinNBTags"
               >
                 Skip if not taggable
               </button>
@@ -443,10 +443,10 @@
             <div class="col-5">
               <button
                 type="button"
-                :disabled="selectedTags.length < 3"
+                :disabled="selectedTags.length < MinNBTags"
                 :class="{
-                  'btn-secondary': selectedTags.length < 3,
-                  'btn-success': selectedTags.length >= 3,
+                  'btn-secondary': selectedTags.length < MinNBTags,
+                  'btn-success': selectedTags.length >= MinNBTags,
                 }"
                 class="btn btn-margin button-border final-button-size"
                 style="width: 10vw"
@@ -477,6 +477,8 @@ export default {
   name: "App",
   data() {
     return {
+      MinNBTags: 3,
+      MaxNBTags: 8,
       tags: myFile,
       images: undefined,
       todayImages: 0,
